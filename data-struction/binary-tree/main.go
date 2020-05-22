@@ -12,12 +12,12 @@ var (
 // 二叉树节点
 type Node struct {
 	value int
-	left *Node
+	left  *Node
 	right *Node
 }
 
 // 初始化1颗二叉树
-func init()  {
+func init() {
 	node7 := &Node{7, nil, nil}
 	node6 := &Node{6, nil, nil}
 	node5 := &Node{5, nil, nil}
@@ -29,13 +29,13 @@ func init()  {
 }
 
 func main() {
-	recursionMiddleOrderTraversal(root)
+	recursionPostOrderTraversal(root)
 	fmt.Println()
-	middleOrderTraversal(root)
+	postOrderTraversal(root)
 }
 
 // 递归方法 实现前序遍历
-func recursionPreOrderTraversal(node *Node)  {
+func recursionPreOrderTraversal(node *Node) {
 	if node != nil {
 		fmt.Print(node.value, " ")
 		recursionPreOrderTraversal(node.left)
@@ -44,7 +44,7 @@ func recursionPreOrderTraversal(node *Node)  {
 }
 
 // 递归方法 实现中序遍历
-func recursionMiddleOrderTraversal(node *Node)  {
+func recursionMiddleOrderTraversal(node *Node) {
 	if node != nil {
 		recursionMiddleOrderTraversal(node.left)
 		fmt.Print(node.value, " ")
@@ -53,7 +53,7 @@ func recursionMiddleOrderTraversal(node *Node)  {
 }
 
 // 递归方法 实现中序遍历
-func recursionPostOrderTraversal(node *Node)  {
+func recursionPostOrderTraversal(node *Node) {
 	if node != nil {
 		recursionPostOrderTraversal(node.left)
 		recursionPostOrderTraversal(node.right)
@@ -91,6 +91,27 @@ func middleOrderTraversal(node *Node) {
 			stack.Remove(s)
 			fmt.Print(s.Value.(*Node).value, " ")
 			node = s.Value.(*Node).right
+		}
+	}
+}
+
+// 非递归 实现后序遍历
+func postOrderTraversal(node *Node) {
+	stack := list.New()
+	lastVisit := node
+	for node != nil || stack.Len() > 0 {
+		for node != nil {
+			stack.PushBack(node)
+			node = node.left
+		}
+		node = stack.Back().Value.(*Node)
+		if node.right == nil || node.right == lastVisit {
+			fmt.Print(node.value, " ")
+			stack.Remove(stack.Back())
+			lastVisit = node
+			node = nil
+		} else {
+			node = node.right
 		}
 	}
 }
