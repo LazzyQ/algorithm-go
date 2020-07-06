@@ -29,9 +29,7 @@ func init() {
 }
 
 func main() {
-	recursionPostOrderTraversal(root)
-	fmt.Println()
-	postOrderTraversal(root)
+
 }
 
 // 递归方法 实现前序遍历
