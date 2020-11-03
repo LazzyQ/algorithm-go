@@ -90,20 +90,27 @@ func (ac *AhoCorasickAutomation) build() {
 func (ac *AhoCorasickAutomation) FindAll(text string) []string {
 	cur := ac.Root
 	result := make([]string, 0)
-	for _, char := range text {
+
+	str := []rune(text)
+	for i := 0; i < len(str);  {
+		char := str[i]
 		if v, ok := cur.Table[char]; ok {
 			cur = v
 			if cur.IsWord() {
 				result = append(result, cur.Str)
 			}
 
-			if cur.Fail != nil && cur.Fail.IsWord() {
-				result = append(result, cur.Fail.Str)
+			fail := cur.Fail
+			for fail != nil && fail.IsWord() {
+				result = append(result, fail.Str)
+				fail = fail.Fail
 			}
+			i++
 		} else {
 			cur = cur.Fail
 			if cur == nil {
 				cur = ac.Root
+				i++
 			}
 		}
 	}

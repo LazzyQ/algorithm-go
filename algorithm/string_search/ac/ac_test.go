@@ -1,10 +1,16 @@
 package ac
 
-import "testing"
+import (
+	"strings"
+	"testing"
+)
 
 func TestAhoCorasickAutomation_FindAll(t *testing.T) {
-	ac := NewAC([]string{"明星", "林俊杰"})
 
-	result := ac.FindAll("今晚出场的明星有周杰伦，林俊杰，陈奕迅")
+	kw := "有什么区别,么区别,区别"
+
+	ac := NewAC(strings.Split(kw, ","))
+
+	result := ac.FindAll("有什么区别")
 	t.Log(result)
 }
